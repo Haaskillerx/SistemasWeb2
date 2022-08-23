@@ -1,0 +1,207 @@
+﻿
+
+@model DataPaginador<TCategoria>
+@{
+    ViewData["Title"] = "Categorias";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1>@ViewData["Title"]</h1>
+<p>
+    <!-- Button trigger modal -->
+    <button id="mostrar_modal" type="button" class="btn btn-primary" >
+      Crear Categoria
+    </button>
+
+</p>
+
+
+<!-- Modal -->
+<div class="modal fade"  id="modal_Categoria" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" >
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Agregar Categoria</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <!-- CUERPO -->
+        <form id='formulario_categoria' method="post" asp-area="Categorias" asp-controller="Categorias" asp-action="GetCategorias"  >
+            <div class="modal-body ">
+                <div class="form-horizontal ">
+                   <div class="form-group align-middle ">
+                       <label asp-for="Input.Nombre" class="col-md-2 control-label">Nombre:</label>
+                       <div class="col-md-10">
+                            <input asp-for="Input.Nombre" placeholder="Nombre" class="form-control" />
+                            <span asp-validation-for="Input.Nombre" class="text-danger"></span>
+                        </div>
+
+                   </div>
+
+                   <div class="form-group align-middle ">
+                       <label asp-for="Input.Descripcion" class="col-md-2 control-label">Descripcion:</label>
+                       <div class="col-md-10">
+                            <input asp-for="Input.Descripcion" placeholder="Estado" class="form-control" />
+                            <span asp-validation-for="Input.Descripcion" class="text-danger"></span>
+                        </div>
+
+                   </div>
+                   <div class="form-group align-middle ">
+                       <label asp-for="Input.Estado" class="col-md-2 control-label">Estado:</label>
+                       <div class="col-md-10">
+                            <input asp-for="Input.Estado"  />
+                        </div>
+
+                   </div>
+                   <span id="mensaje" class="text-danger"></span>
+                   <input type="text" required class='d-none' />
+                </div>
+
+            </div>
+
+        </form>
+        <!-- CUERPO -->
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="button" onClick="" id="EnviarCategorias" class="btn btn-primary">Agregar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+@section Scripts
+{
+    @await Html.PartialAsync("_ValidationScriptsPartial");
+<script type="text/javascript">
+   
+   
+    (function() 
+ {
+    // your page initialization code here
+    // the DOM will be available here
+	//INCLUDE HTML FILE FOR ANIMATIONS
+	//$("#partial_modals").load("partials/_modals.php"); 
+    
+    // MOSTRAR MODAL.
+    const button = document.querySelector('#mostrar_modal')
+    button.onclick = () => {
+	    let accessType = 'show';
+	    mostrarModalCategoria(accessType);
+    };
+
+        function mostrarModalCategoria(accessType)
+    {
+	    //DECLARAR MODAL (CREAR OBJETO)
+	    const myModal = new bootstrap.Modal('#modal_Categoria', {
+            backdrop: "static ", 
+            keyboard: false
+        });
+	
+	    myModal.show();
+	
+    }
+
+    //ENVIAR.
+    const buttonEnviar = document.querySelector('#EnviarCategorias')
+        buttonEnviar.onclick = () => {
+            //Funcion
+	        //objetoJS.FetchApi();
+	        FetchApi();
+    };
+
+
+    
+
+    function FetchApi() {
+
+        // Get the form
+        let form = document.querySelector('#formulario_categoria');
+        // Get all field data from the form
+        let formData = new FormData(form);
+        // Convert to an object
+        //let formObj = Serializado(data);
+        let postData = new FormData();
+        // Display the key/value pairs
+        for (var pair of formData.entries()) {
+            //console.log(pair[0] + ', ' + pair[1]);
+            postData.append(pair[0], pair[1]);
+        }
+        
+        let _data = {
+            test1: "foo",
+            test2: "bar",
+            test3: 1
+        };
+        
+        var urlPost = 'GetCategorias';
+        fetch(urlPost,
+            {
+                method: 'POST',
+                body: JSON.stringify({
+                    Nombre: "aa",
+                    Descripcion: 'test'
+                }),
+                headers:{ "Content-type": "application/json; charset=UTF-8" }
+            })//.then(response => response.json())
+            .catch(error => console.error('Error:', error))
+            .then(response => console.log('Success:', response.text));
+
+
+        //FIN DEL AJAX NATURAL
+
+
+    }
+
+    /*
+            function RegistrarCategorias() {
+                
+            if(test == 1)
+            {
+                objetoJS.alerta();
+            }
+
+            
+
+            return false;
+            
+            // Get the form
+            let form = document.querySelector('#formulario');
+            // Get all field data from the form
+           // let data = new FormData(form);
+            // Convert to an object
+            const data = new URLSearchParams();
+            for (const pair of new FormData(form)) {
+                data.append(pair[0], pair[1]);
+            }
+
+
+            fetch(urlPost, {
+            method: 'POST',
+            body: data,
+            headers: {
+                'Content-Type' : 'application/json'
+            }
+            })//.then(response => response.json())
+            //.catch(error => console.error('Error:', error))
+            .then(response => console.log('Success:', response.text));
+
+
+            }*/
+
+
+
+		
+})();//END JS ON DOCUMENT READY
+
+        
+
+
+
+
+
+
+</script>
+}
